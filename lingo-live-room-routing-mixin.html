@@ -15,7 +15,6 @@
     ></app-route>
   </template>
   <script>
-  let memoizedTemplate;
   const LingoLiveRoomRoutingMixin = (superClass) => class extends superClass {
     static get properties() {
       return {
@@ -38,12 +37,12 @@
       };
     }
     static get template() {
-      if (!memoizedTemplate) {
-        memoizedTemplate = LingoLiveTextChat.template.cloneNode(true);
+      if (!this.memoizedTemplate) {
+        this.memoizedTemplate = LingoLiveTextChat.template.cloneNode(true);
         let memoizedTemplateSelf = Polymer.DomModule.import('lingo-live-room-routing-mixin', 'template');
-        memoizedTemplate.content.appendChild(memoizedTemplateSelf.content);
+        this.memoizedTemplate.content.appendChild(memoizedTemplateSelf.content);
       }
-      return memoizedTemplate;
+      return this.memoizedTemplate;
     }
     _routeChanged() {
       let identity = this.route.__queryParams.identity;
