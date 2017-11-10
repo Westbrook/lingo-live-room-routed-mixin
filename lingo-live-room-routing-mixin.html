@@ -10,7 +10,7 @@
     ></app-location>
     <app-route
       route="{{route}}"
-      pattern="[[basePath]]/:room"
+      pattern="[[basePath]]/:roomName"
       data="{{routeData}}"
     ></app-route>
   </template>
@@ -47,7 +47,7 @@
     _routeChanged() {
       let identity = this.route.__queryParams.identity;
       if (identity) {
-        this.currentUser = this.currentUserName = identity;
+        this.identity = identity;
         let newPathname = location.pathname;
         let params = this.route.__queryParams;
         let newParams = '';
@@ -64,7 +64,7 @@
       }
     }
     _routeDataChanged() {
-      this.room = this.routeData.room;
+      this.roomName = this.routeData.roomName;
     }
   }
   </script>
