@@ -1,0 +1,71 @@
+<link rel="import" href="../app-route/app-location.html">
+<link rel="import" href="../app-route/app-route.html">
+
+<dom-module id="lingo-live-room-routing-mixin">
+  <template>
+    <app-location
+      route="{{route}}"
+      url-space-regex="^[[basePath]]"
+      use-hash-as-path="[[useHashAsPath]]"
+    ></app-location>
+    <app-route
+      route="{{route}}"
+      pattern="[[basePath]]/:room"
+      data="{{routeData}}"
+    ></app-route>
+  </template>
+  <script>
+  let memoizedTemplate;
+  const LingoLiveRoomRoutingMixin = (superClass) => class extends superClass {
+    static get properties() {
+      return {
+        route: {
+          type: Object,
+          observer: '_routeChanged'
+        },
+        routeData: {
+          type: Object,
+          observer: '_routeDataChanged'
+        },
+        useHashAsPath: {
+          type: Boolean,
+          value: false
+        },
+        basePath: {
+          type: String,
+          value: ''
+        }
+      };
+    }
+    static get template() {
+      if (!memoizedTemplate) {
+        memoizedTemplate = LingoLiveTextChat.template.cloneNode(true);
+        let memoizedTemplateSelf = Polymer.DomModule.import('lingo-live-room-routing-mixin', 'template');
+        memoizedTemplate.content.appendChild(memoizedTemplateSelf.content);
+      }
+      return memoizedTemplate;
+    }
+    _routeChanged() {
+      let identity = this.route.__queryParams.identity;
+      if (identity) {
+        this.currentUser = this.currentUserName = identity;
+        let newPathname = location.pathname;
+        let params = this.route.__queryParams;
+        let newParams = '';
+        for (let param in params) {
+          if (!params.hasOwnProperty(param)) continue;
+          if (param === 'identity') continue;
+
+          if (newParams) newParams += '&';
+          newParams += `${param}=${params[param]}`;
+        }
+        if (newParams) newPathname += `?${newParams}`;
+        if (this.useHashAsPath) newPathname += `#${this.route.path}`;
+        history.replaceState({}, document.title, newPathname);
+      }
+    }
+    _routeDataChanged() {
+      this.room = this.routeData.room;
+    }
+  }
+  </script>
