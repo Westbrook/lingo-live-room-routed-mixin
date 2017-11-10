@@ -38,7 +38,7 @@
     }
     static get template() {
       if (!this.memoizedTemplate) {
-        this.memoizedTemplate = LingoLiveTextChat.template.cloneNode(true);
+        this.memoizedTemplate = superClass.template.cloneNode(true);
         let memoizedTemplateSelf = Polymer.DomModule.import('lingo-live-room-routing-mixin', 'template');
         this.memoizedTemplate.content.appendChild(memoizedTemplateSelf.content);
       }
