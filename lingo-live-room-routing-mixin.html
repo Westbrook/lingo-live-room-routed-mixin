@@ -50,16 +50,17 @@
         this.identity = identity;
         let newPathname = location.pathname;
         let params = this.route.__queryParams;
-        let newParams = '';
+        let newParams = [];
         for (let param in params) {
           if (!params.hasOwnProperty(param)) continue;
           if (param === 'identity') continue;
 
-          if (newParams) newParams += '&';
-          newParams += `${param}=${params[param]}`;
+          newParams.push(`${param}=${params[param]}`);
         }
-        if (newParams) newPathname += `?${newParams}`;
-        if (this.useHashAsPath) newPathname += `#${this.route.path}`;
+        if (newParams.length) newPathname += `?${newParams.join('&')}`;
+        if (this.useHashAsPath && this.route.path) {
+          newPathname += `#${this.route.path}`;
+        }
         history.replaceState({}, document.title, newPathname);
       }
     }
