@@ -71,7 +71,7 @@
       }
     }
     _routeDataChanged() {
-      this.roomName = this.routeData.roomName;
+      this.roomName = this.routeData.roomName ? this.routeData.roomName : '';
     }
   }
   </script>
