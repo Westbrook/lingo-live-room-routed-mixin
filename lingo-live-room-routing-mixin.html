@@ -23,7 +23,8 @@
    */
   const lingoLiveRoomRoutingMixin = (superClass) => class extends superClass {
     static get properties() {
-      return {
+      let propertiesSuper = superClass.properties;
+      let propertiesLocal = {
         route: {
           type: Object,
           observer: '_routeChanged'
@@ -41,6 +42,7 @@
           value: ''
         }
       };
+      return Object.assign({}, propertiesSuper, propertiesLocal);
     }
     static get template() {
       if (!this.memoizedTemplate) {
